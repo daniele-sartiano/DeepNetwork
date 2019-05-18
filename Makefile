@@ -4,3 +4,15 @@
 
 DATASET =
 
+PYTHON_ENV = .env
+PYTHON_ENV_BIN = $(PYTHON_ENV)/bin
+PYTHON = $(PYTHON_ENV_BIN)/python
+
+$(PYTHON_ENV):
+	python3 -m venv $@
+
+init: requirements.txt $(PYTHON_ENV)
+	$(PYTHON_ENV_BIN)/pip install -r $<
+
+test:
+	$(PYTHON) -m unittest
