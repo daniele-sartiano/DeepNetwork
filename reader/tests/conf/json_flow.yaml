@@ -1,0 +1,9 @@
+reader: json
+type: flow
+fields:
+ ip:
+   src: IPV4_SRC_ADDR
+   dst: IPV4_DST_ADDR
+ mac:
+   src: IN_SRC_MAC
+   dst: IN_DST_MAC
