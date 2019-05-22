@@ -2,6 +2,7 @@ import os
 import unittest
 from .. import reader
 
+
 class TestJsonFlowReader(unittest.TestCase):
     path = os.path.dirname(os.path.realpath(__file__))
     data = os.path.join(path, 'data', 'sample_json_flow.txt')
@@ -18,6 +19,7 @@ class TestJsonFlowReader(unittest.TestCase):
         headers_len = set([len(el.keys()) for el in data])
         self.assertEqual(1, len(headers_len))
         self.assertEqual(headers_len.pop(), len(r.header))
+
 
 if __name__ == '__main__':
     unittest.main()
