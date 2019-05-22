@@ -2,8 +2,12 @@ reader: json
 type: flow
 fields:
  ip:
+  v4:
    src: IPV4_SRC_ADDR
    dst: IPV4_DST_ADDR
+  v6:
+   src: IPV6_SRC_ADDR
+   dst: IPV6_DST_ADDR
  mac:
    src: IN_SRC_MAC
    dst: IN_DST_MAC
