@@ -10,6 +10,5 @@ source .env/bin/activate
 ### Install dependencies
 
 ```
-npm install -g electron@1.8.4 orca
 pip install -r requirements.txt
 ```
