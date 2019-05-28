@@ -16,3 +16,12 @@ init: requirements.txt $(PYTHON_ENV)
 
 test:
 	$(PYTHON) -m unittest
+
+run_grafana:
+	docker run -d -p 3000:3000 \
+		--name=grafana \
+		-e "GF_SERVER_ROOT_URL=http://grafana.server.name" \
+		-e "GF_SECURITY_ADMIN_PASSWORD=secret" grafana/grafana
+
+run_influxdb:
+	docker run -p 8086:8086 -p 8083:8083 -e INFLUXDB_ADMIN_ENABLED=true -v influxdb:/var/lib/influxdb influxdb
