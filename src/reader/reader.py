@@ -56,21 +56,24 @@ class FlowReader(Reader):
 
 class JsonFlowReader(FlowReader):
 
+    @staticmethod
+    def _quote_url(row):
+        start = row.find('"HTTP_URL":')
+        # try to fix http url
+        if start > -1:
+            start += len('"HTTP_URL":')
+            start += row[start:].find('"') + 1
+            end = start + (row[start:].find('","') if row[start:].find('","') != -1 else row[start:].find('"}'))
+            http_url_quoted = urllib.parse.quote_plus(row[start:end])
+            row = row.replace(row[start:end], http_url_quoted)
+        return row
+
     def read(self):
         for i, row in enumerate(self.input):
             if not row or row.startswith('#'):
                 continue
-            try:
-                data = orjson.loads(row)
-            except orjson.JSONDecodeError as e:
-                # try to fix http url
-                start = row.find('"HTTP_URL":') + len('"HTTP_URL":')
-                start = start + row[start:].find('"') + 1
-                end = start + (row[start:].find('","') if row[start:].find('","') != -1 else row[start:].find('"}'))
-                print(row[start:end])
-                http_url_quoted = urllib.parse.quote_plus(row[start:end])
-                row = row.replace(row[start:end], http_url_quoted)
-                data = orjson.loads(row)
+            row = self._quote_url(row)
+            data = orjson.loads(row)
             if self.header is None:
                 self.header = data.keys()
             self.n_flows += 1
@@ -78,3 +81,12 @@ class JsonFlowReader(FlowReader):
                 self.hosts.add(h)
             yield data
 
+    def hosts2flow(self):
+        hosts2data = {}
+        for flow in self.read():
+            src, dst = self._hosts(flow)
+            for h in (src, dst):
+                if h not in hosts2data:
+                    hosts2data[h] = []
+                hosts2data[h].append(flow)
+        return hosts2data
