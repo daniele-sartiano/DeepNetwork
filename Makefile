@@ -23,5 +23,8 @@ run_grafana:
 		-e "GF_SERVER_ROOT_URL=http://grafana.server.name" \
 		-e "GF_SECURITY_ADMIN_PASSWORD=secret" grafana/grafana
 
+# see https://hub.docker.com/_/chronograf
+
 run_influxdb:
-	docker run -p 8086:8086 -p 8083:8083 -e INFLUXDB_ADMIN_ENABLED=true -v influxdb:/var/lib/influxdb influxdb
+	#docker run -p 8086:8086 -p 8083:8083 -e INFLUXDB_ADMIN_ENABLED=true -v influxdb:/var/lib/influxdb influxdb
+	docker run -p 8086:8086 -p 8083:8083 -e INFLUXDB_ADMIN_ENABLED=true influxdb
